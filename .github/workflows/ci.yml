@@ -11,17 +11,12 @@ jobs:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
         with:
-#          envs: GITHUB_SHA
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             cd infrastructure
             git pull origin
-#            echo VERSION=${GITHUB_SHA::8} >> .env
-#            sudo docker-compose stop
-#            sudo docker rm -f $(sudo docker ps -aq)
-#            sudo docker-compose up -d
 
   send_message:
     runs-on: ubuntu-latest
