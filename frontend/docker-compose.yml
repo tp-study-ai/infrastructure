@@ -8,5 +8,5 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./dist:/var/html
-      - ./study-ai.crt:/etc/ssl
-      - ./study-ai.key:/etc/ssl
+      - ./certs:/etc/ssl
+
