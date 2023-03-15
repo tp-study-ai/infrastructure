@@ -7,4 +7,4 @@ services:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./home/ubuntu/frontend:/var/html
+      - ./dist:/var/html
