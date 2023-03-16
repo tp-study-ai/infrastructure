@@ -23,7 +23,17 @@ jobs:
             cd frontend && sudo docker-compose up -d
             cd ../backend && sudo docker-compose up -d
 
-  send_message:
+  send_message_1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: send message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: 1/2 ${{ github.repository }} start!
+
+  send_message_2:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
@@ -32,4 +42,4 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: ${{ github.workflow }} infrastructure успешно выполнен!
+          message: 2/2 ${{ github.repository }} successes!
