@@ -5,4 +5,4 @@ services:
     image: yutfut/back:${VERSION}
     restart: always
     ports:
-      - '8001:8001'
+      - '8000:8000'
