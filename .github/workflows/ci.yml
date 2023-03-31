@@ -25,13 +25,11 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script: |
             cd infrastructure
-#            cd frontend && sudo docker-compose stop
-#            cd ../backend && sudo docker-compose stop
-#            cd ..
-#            sudo docker rm -f $(sudo docker ps -aq)
+            sudo docker-compose stop
+            sudo docker-compose down
+            sudo docker rm -f $(sudo docker ps -aq)
             git pull origin
-#            cd frontend && sudo docker-compose up -d
-#            cd ../backend && sudo docker-compose up -d
+            sudo docker-compose up -d
 
   send_message_2:
     runs-on: ubuntu-latest
