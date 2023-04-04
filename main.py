@@ -11,118 +11,143 @@ conn = psycopg2.connect(database="yutfut",
 
 cursor = conn.cursor()
 
+class MyString(str):
+    def __init__(self, my_object: str):
+        self.value = my_object
 
-def print_hi(a):
-    # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    # print(a)
-    # print(len(a))
-    # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    if len(a) == 2:
-        # print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        return ["null"]
+    def __repr__(self):
+        return '$study_ai_tag$' + self.value + '$study_ai_tag$'
+
+
+def parse_tests(text):
+    text = text[1:len(text) - 1]
     che = []
-    key_string = ""
+    while (True):
+        input = text[0:5]
 
-    i = 0
-    while True:
-        if a[i] == "]":
-            break
-        if a[i] == '"':
-            i += 1
-            while True:
-                if a[i] == "\\":
-                    i += 2
-                    continue
-                if a[i] == '"':
-                    che.append(key_string)
-                    key_string = ""
-                    i += 1
-                    break
-                key_string += a[i]
-                i += 1
-        if a[i] == "[":
-            i += 1
-            continue
-        if a[i] == ":":
-            i += 1
-            continue
-        if a[i] == ",":
-            i += 1
-            continue
-        if a[i] == "\n":
-            i += 1
-            continue
+        text = text[8:]
+        pos = text.find('output: "')
+        input_case = text[:pos-2].replace('\\n', "\n")
 
-        if a[i] == " ":
-            if key_string != "":
-                che.append(key_string)
-                key_string = ""
-            i += 1
-            continue
+        text = text[pos:]
+        output = text[:6]
 
-        key_string += a[i]
-        i += 1
-        if i >= len(a):
-            break
-    return che
+        text = text[9:]
+        pos = text.find('input: "')
+        if pos == -1:
+            pos = text.find('"')
+            output_case = text[:pos].replace('\\n', "\n")
 
+            che.append(MyString(input))
+            che.append(MyString(input_case))
+            che.append(MyString(output))
+            che.append(MyString(output_case))
+            if len(che) == 0:
+                return ["NULL"]
+            return che
+
+        output_case = text[:pos-4].replace('\\n', "\n")
+        text = text[pos:]
+
+        che.append(MyString(input))
+        che.append(MyString(input_case))
+        che.append(MyString(output))
+        che.append(MyString(output_case))
 
 data = []
 
+
 csv.field_size_limit(sys.maxsize)
-with open('../new_file3.csv') as f:
+
+with open('new_file3.csv') as f:
     reader = csv.reader(f)
     for row in reader:
         data.append(
             [
-                row[1],
-                row[2],
-                row[3],
-                row[4],
-                row[5],
-                row[6],
-                row[7],
-                row[8],
-                row[9],
-                row[10],
-                row[11],
-                row[12],
-                row[13],
-                row[14],
-                row[15],
-                row[16],
-                row[17],
-                row[18]
+                row[1],  # name
+                row[2],  # description
+                row[3],  # public_tests
+                row[4],  # private_tests
+                row[5],  # generated_tests
+                row[6],  # difficulty
+                row[7],  # cf_contest_id
+                row[8],  # cf_index
+                row[9],  # cf_points
+                row[10],  # cf_rating
+                row[11],  # cf_tags
+                row[12],  # time_limit
+                row[13],  # memory_limit_bytes
+                row[14],  # link
+                row[15],  # task_ru
+                row[16],  # input
+                row[17],  # output
+                row[18]  # note
             ]
         )
-
-print("prec")
 
 for item in data:
     if item == data[0]:
         continue
+    if len(item[10]):
+        item[10] = ["NULL"]
+
     cursor.execute(
-    '''INSERT INTO task (name, description, public_tests, private_tests, generated_tests, difficulty, cf_contest_id, cf_index, cf_points, cf_rating, cf_tags, time_limit, memory_limit_bytes, link, task_ru, input, output, note) VALUES (E'{0}', E'{1}', ARRAY{2}, ARRAY{3}, ARRAY{4}, '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', E'{14}', E'{15}', E'{16}', E'{17}');'''.format(
-        item[0].replace("'", r"\'"), item[1].replace('\\', r"\\").replace("'", r"\'"), print_hi(item[2]), print_hi(item[3]), print_hi(item[4]), item[5], item[6], item[7],
-        item[8], item[9], str(item[10].replace("'", "")), item[11], item[12], item[13], item[14].replace('\\', r"\\").replace("'", r"\'"), item[15].replace('\\', r"\\").replace("'", r"\'"), item[16].replace('\\', r"\\").replace("'", r"\'"), item[17].replace('\\', r"\\").replace("'", r"\'")))
+        '''INSERT INTO tasks (
+        name,
+        description,
+        public_tests,
+        private_tests,
+        generated_tests,
+        difficulty,
+        cf_contest_id,
+        cf_index,
+        cf_points,
+        cf_rating,
+        cf_tags,
+        time_limit,
+        memory_limit_bytes,
+        link,
+        task_ru,
+        input,
+        output,
+        note
+        ) VALUES (
+        E'{0}',
+        E'{1}',
+        ARRAY{2},
+        ARRAY{3},
+        ARRAY{4},
+        '{5}',
+        {6},
+        '{7}',
+        '{8}',
+        '{9}',
+        ARRAY{10},
+        '{11}',
+        '{12}',
+        '{13}',
+        E'{14}',
+        E'{15}',
+        E'{16}',
+        E'{17}'
+        );'''.format(
+            item[0].replace("'", r"\'"),
+            item[1].replace('\\', r"\\").replace("'", r"\'"),
+            parse_tests(item[2]),
+            parse_tests(item[3]),
+            parse_tests(item[4]),
+            item[5],
+            item[6],
+            item[7],
+            item[8],
+            item[9],
+            item[10],
+            # str(item[10].replace("'", "")),
+            item[11],
+            item[12],
+            item[13],
+            item[14].replace('\\', r"\\").replace("'", r"\'"),
+            item[15].replace('\\', r"\\").replace("'", r"\'"),
+            item[16].replace('\\', r"\\").replace("'", r"\'"),
+            item[17].replace('\\', r"\\").replace("'", r"\'")))
     conn.commit()
-
-# [intput: "example" output: "example", intput: "example" output: "example"]
-# ['intput', 'example', 'output']
-
-# i = 0
-#
-# f = open('../init_db/init.sql', 'w')
-# for item in data:
-#     if item == data[0]:
-#         continue
-#     i += 1
-#     f.write(
-#         '''(E'{0}', E'{1}', 'ARRAY{2}', 'ARRAY'{3}', ARRAY'{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', E'{14}', E'{15}', E'{16}', E'{17}'),\n'''.format(
-#         item[0].replace("'", r"\'"), item[1].replace('\\', r"\\").replace("'", r"\'"), print_hi(item[2]), print_hi(item[3]), print_hi(item[4]), item[5], item[6], item[7],
-#         item[8], item[9], str(item[10].replace("'", "")), item[11], item[12], item[13], item[14].replace('\\', r"\\").replace("'", r"\'"), item[15].replace('\\', r"\\").replace("'", r"\'"), item[16].replace('\\', r"\\").replace("'", r"\'"), item[17].replace('\\', r"\\").replace("'", r"\'")
-#         )
-#     )
-#     if i == 10:
-#         break
-
