@@ -84,8 +84,6 @@ with open('../new_file3.csv') as f:
             ]
         )
 
-print("first")
-
 for item in data:
     if item == data[0]:
         continue
