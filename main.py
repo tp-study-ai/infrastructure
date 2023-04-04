@@ -89,7 +89,7 @@ print("first")
 for item in data:
     if item == data[0]:
         continue
-    if len(item[10]) == 0:
+    if len(item[10]):
         item[10] = ["NULL"]
 
     cursor.execute(
