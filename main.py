@@ -11,6 +11,7 @@ conn = psycopg2.connect(database="yutfut",
 
 cursor = conn.cursor()
 
+
 class MyString(str):
     def __init__(self, my_object: str):
         self.value = my_object
@@ -22,12 +23,11 @@ class MyString(str):
 def parse_tests(text):
     text = text[1:len(text) - 1]
     che = []
-    while (True):
+    while True:
         input = text[0:5]
-
         text = text[8:]
         pos = text.find('output: "')
-        input_case = text[:pos-2].replace('\\n', "\n")
+        input_case = text[:pos - 2].replace('\\n', "\n")
 
         text = text[pos:]
         output = text[:6]
@@ -45,17 +45,16 @@ def parse_tests(text):
             if len(che) == 0:
                 return ["NULL"]
             return che
+        output_case = text[:pos - 4].replace('\\n', "\n")
 
-        output_case = text[:pos-4].replace('\\n', "\n")
         text = text[pos:]
-
         che.append(MyString(input))
         che.append(MyString(input_case))
         che.append(MyString(output))
         che.append(MyString(output_case))
 
-data = []
 
+data = []
 
 csv.field_size_limit(sys.maxsize)
 
@@ -85,10 +84,12 @@ with open('../new_file3.csv') as f:
             ]
         )
 
+print("first")
+
 for item in data:
     if item == data[0]:
         continue
-    if len(item[10]):
+    if len(item[10]) == 0:
         item[10] = ["NULL"]
 
     cursor.execute(
@@ -142,7 +143,6 @@ for item in data:
             item[8],
             item[9],
             item[10],
-            # str(item[10].replace("'", "")),
             item[11],
             item[12],
             item[13],
