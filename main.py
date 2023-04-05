@@ -12,6 +12,98 @@ conn = psycopg2.connect(database="yutfut",
 cursor = conn.cursor()
 
 
+# tags_dict = {
+#     "*special": "*особая задача",
+#     "2-sat": "2-sat",
+#     "binary search": "бинарный поиск",
+#     "bitmasks": "битмаски",
+#     "brute force": "перебор",
+#     "chinese remainder theorem": "китайская теорема об остатках",
+#     "combinatorics": "комбинаторика",
+#     "constructive algorithms": "конструктив",
+#     "data structures": "структуры данных",
+#     "dfs and similar": "поиск в глубину и подобное",
+#     "divide and conquer": "разделяй и властвуй",
+#     "dp": "дп",
+#     "dsu": "системы непересекающихся множеств",
+#     "expression parsing": "разбор выражений",
+#     "fft": "быстрое преобразование Фурье",
+#     "flows": "потоки",
+#     "games": "игры",
+#     "geometry": "геометрия",
+#     "graph matchings": "паросочетания",
+#     "graphs": "графы",
+#     "greedy": "жадные алгоритмы",
+#     "hashing": "хэши",
+#     "implementation": "реализация",
+#     "interactive": "интерактив",
+#     "math": "математика",
+#     "matrices": "матрицы",
+#     "meet-in-the-middle": "meet-in-the-middle",
+#     "number theory": "теория чисел",
+#     "probabilities": "теория вероятностей",
+#     "schedules": "расписания",
+#     "shortest paths": "кратчайшие пути",
+#     "sortings": "сортировки",
+#     "string suffix structures": "строковые суфф. структуры",
+#     "strings": "строки",
+#     "ternary search": "тернарный поиск",
+#     "trees": "деревья",
+#     "two pointers": "два указателя"
+# }
+
+tags_dict = {
+    "*special": 1,
+    "2-sat": 2,
+    "binary search": 3,
+    "bitmasks": 4,
+    "brute force": 5,
+    "chinese remainder theorem": 6,
+    "combinatorics": 7,
+    "constructive algorithms": 8,
+    "data structures": 9,
+    "dfs and similar": 10,
+    "divide and conquer": 11,
+    "dp": 12,
+    "dsu": 13,
+    "expression parsing": 14,
+    "fft": 15,
+    "flows": 16,
+    "games": 17,
+    "geometry": 18,
+    "graph matchings": 19,
+    "graphs": 20,
+    "greedy": 21,
+    "hashing": 22,
+    "implementation": 23,
+    "interactive": 24,
+    "math": 25,
+    "matrices": 26,
+    "meet-in-the-middle": 27,
+    "number theory": 28,
+    "probabilities": 29,
+    "schedules": 30,
+    "shortest paths": 31,
+    "sortings": 32,
+    "string suffix structures": 33,
+    "strings": 34,
+    "ternary search": 35,
+    "trees": 36,
+    "two pointers": 37,
+}
+
+
+def parse_tags(request):
+    request = request[2:len(request) - 2]
+    if len(request) == 0:
+        return [0]
+    request = request.split("', '")
+    response = []
+    for i in request:
+        response.append(tags_dict[i])
+    return response
+
+
 class MyString(str):
     def __init__(self, my_object: str):
         self.value = my_object
@@ -58,8 +150,12 @@ data = []
 
 csv.field_size_limit(sys.maxsize)
 
-with open('../new_file3.csv') as f:
+
+with open('new_file3.csv') as f:
     reader = csv.reader(f)
+
+    # i = 0
+
     for row in reader:
         data.append(
             [
@@ -83,12 +179,75 @@ with open('../new_file3.csv') as f:
                 row[18]  # note
             ]
         )
+        # i += 1
+        # if i == 2:
+        #     break
 
 for item in data:
     if item == data[0]:
         continue
-    if len(item[10]):
-        item[10] = ["NULL"]
+    # print(item[10])
+    # print(parse_tags(item[10]))
+    # if len(item[11]) == 0:
+    #     item[11] = ["NULL"]
+
+    # print('''INSERT INTO tasks (
+    #     name,
+    #     description,
+    #     public_tests,
+    #     private_tests,
+    #     generated_tests,
+    #     difficulty,
+    #     cf_contest_id,
+    #     cf_index,
+    #     cf_points,
+    #     cf_rating,
+    #     cf_tags,
+    #     time_limit,
+    #     memory_limit_bytes,
+    #     link,
+    #     task_ru,
+    #     input,
+    #     output,
+    #     note
+    #     ) VALUES (
+    #     E'{0}',
+    #     E'{1}',
+    #     ARRAY{2},
+    #     ARRAY{3},
+    #     ARRAY{4},
+    #     '{5}',
+    #     {6},
+    #     '{7}',
+    #     '{8}',
+    #     '{9}',
+    #     ARRAY{10},
+    #     '{11}',
+    #     '{12}',
+    #     '{13}',
+    #     E'{14}',
+    #     E'{15}',
+    #     E'{16}',
+    #     E'{17}'
+    #     );'''.format(
+    #         item[0].replace("'", r"\'"),
+    #         item[1].replace('\\', r"\\").replace("'", r"\'"),
+    #         parse_tests(item[2]),
+    #         parse_tests(item[3]),
+    #         parse_tests(item[4]),
+    #         item[5],
+    #         item[6],
+    #         item[7],
+    #         item[8],
+    #         item[9],
+    #         parse_tags(item[10]),
+    #         item[11],
+    #         item[12],
+    #         item[13],
+    #         item[14].replace('\\', r"\\").replace("'", r"\'"),
+    #         item[15].replace('\\', r"\\").replace("'", r"\'"),
+    #         item[16].replace('\\', r"\\").replace("'", r"\'"),
+    #         item[17].replace('\\', r"\\").replace("'", r"\'")))
 
     cursor.execute(
         '''INSERT INTO tasks (
@@ -116,7 +275,7 @@ for item in data:
         ARRAY{2},
         ARRAY{3},
         ARRAY{4},
-        '{5}',
+        {5},
         {6},
         '{7}',
         '{8}',
@@ -140,7 +299,7 @@ for item in data:
             item[7],
             item[8],
             item[9],
-            item[10],
+            parse_tags(item[10]),
             item[11],
             item[12],
             item[13],

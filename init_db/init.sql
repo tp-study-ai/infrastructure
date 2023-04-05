@@ -5,20 +5,20 @@ SET timezone TO '+03';
 
 create table tasks
 (
-    id SERIAL PRIMARY KEY,
+    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(256) NOT NULL,
     description text,
     public_tests text[],
     private_tests text[],
     generated_tests text[],
-    difficulty text,
-    cf_contest_id int,
+    difficulty integer,
+    cf_contest_id integer,
     cf_index VARCHAR(3),
     cf_points float,
-    cf_rating int,
-    cf_tags text[],
+    cf_rating integer,
+    cf_tags integer[],
     time_limit text,
-    memory_limit_bytes int,
+    memory_limit_bytes integer,
     link VARCHAR(256),
     task_ru text,
     input text,
@@ -28,6 +28,6 @@ create table tasks
 
 CREATE TABLE users (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name VARCHAR(256) NOT NULL,
+    username VARCHAR(256) NOT NULL,
     password VARCHAR(256) NOT NULL
 );
