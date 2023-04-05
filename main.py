@@ -151,7 +151,7 @@ data = []
 csv.field_size_limit(sys.maxsize)
 
 
-with open('new_file3.csv') as f:
+with open('../new_file3.csv') as f:
     reader = csv.reader(f)
 
     # i = 0
