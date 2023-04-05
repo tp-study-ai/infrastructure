@@ -1,27 +1,6 @@
 version: '3'
 
 services:
-  db:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_DB: "yutfut"
-      POSTGRES_USER: "yutfut"
-      POSTGRES_PASSWORD: "yutfut"
-    ports:
-      - '5432:5432'
-    volumes:
-      - /var/lib/postgresql/data/
-      - ./init_db/:/docker-entrypoint-initdb.d/
-
-  adminer:
-    image: adminer
-    restart: always
-    links:
-      - "db:db"
-    ports:
-      - "8090:8080"
-
   backend:
     image: yutfut/back:${VERSION}
     restart: always
