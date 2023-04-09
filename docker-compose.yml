@@ -8,11 +8,27 @@ services:
       POSTGRES_DB: "yutfut"
       POSTGRES_USER: "yutfut"
       POSTGRES_PASSWORD: "yutfut"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
     ports:
       - '5432:5432'
     volumes:
-      - /var/lib/postgresql/data/
       - ./init_db/:/docker-entrypoint-initdb.d/
+      - .:/var/lib/postgresql/data/
+
+#  pgadmin:
+#    container_name: pgadmin_container
+#    image: dpage/pgadmin4:5.7
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: "habrpguser@habr.com"
+#      PGADMIN_DEFAULT_PASSWORD: "pgadminpwd4habr"
+#      PGADMIN_CONFIG_SERVER_MODE: "False"
+#    volumes:
+#      - ./pgadmin:/var/lib/pgadmin
+#    ports:
+#      - "5050:80"
+#    restart: unless-stopped
+#    networks:
+#      - postgres
 
   adminer:
     image: adminer
@@ -44,3 +60,7 @@ services:
       - ./certs:/etc/ssl
     depends_on:
       - backend
+
+#  networks:
+#    postgres:
+#      driver: bridge
