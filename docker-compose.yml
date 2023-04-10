@@ -40,6 +40,15 @@ services:
     depends_on:
       - db
 
+  ml:
+    image: yutfut/back:${VERSION}
+    restart: always
+    ports:
+      - '9000:9000'
+    depends_on:
+      - db
+    env_file:
+      - ml.env
 
   backend:
     image: yutfut/back:${VERSION}
@@ -47,7 +56,7 @@ services:
     ports:
       - '8000:8000'
     depends_on:
-      - db
+      - ml
     env_file:
       - .env
 
