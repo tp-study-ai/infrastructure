@@ -41,14 +41,16 @@ services:
       - db
 
   ml:
-    image: yutfut/ml:${VERSION}
+    image: yutfut/ml:${ML_VERSION}
     restart: always
     ports:
       - '9000:9000'
     depends_on:
       - db
-    env_file:
-      - .env.ml
+#    env_file:
+#      - ./.env.ml
+#    environment:
+#      source: ${VERSION}
 
   backend:
     image: yutfut/back:${BACK_VERSION}
@@ -57,8 +59,8 @@ services:
       - '8000:8000'
     depends_on:
       - ml
-    env_file:
-      - .env.back
+#    env_file:
+#      - .env.back
 
   nginx:
     image: nginx:latest
