@@ -51,14 +51,14 @@ services:
       - ./.env.ml
 
   backend:
-    image: yutfut/back:${VERSION}
+    image: yutfut/back:${BACK_VERSION}
     restart: always
     ports:
       - '8000:8000'
     depends_on:
       - ml
     env_file:
-      - ./.env
+      - ./.env.back
 
   nginx:
     image: nginx:latest
