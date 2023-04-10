@@ -48,7 +48,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./.env.ml
+      - .env.ml
 
   backend:
     image: yutfut/back:${BACK_VERSION}
@@ -58,7 +58,7 @@ services:
     depends_on:
       - ml
     env_file:
-      - ./.env.back
+      - .env.back
 
   nginx:
     image: nginx:latest
