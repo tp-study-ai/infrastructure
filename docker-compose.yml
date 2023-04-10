@@ -41,7 +41,7 @@ services:
       - db
 
   ml:
-    image: yutfut/back:${VERSION}
+    image: yutfut/ml:${VERSION}
     restart: always
     ports:
       - '9000:9000'
