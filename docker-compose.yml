@@ -48,7 +48,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ml.env
+      - .env.ml
 
   backend:
     image: yutfut/back:${VERSION}
