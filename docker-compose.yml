@@ -42,6 +42,7 @@ services:
 
   ml:
     image: yutfut/ml:${ML_VERSION}
+    shm_size: '1gb'
     restart: always
     ports:
       - '9000:9000'
