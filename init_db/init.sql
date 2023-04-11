@@ -18,7 +18,7 @@ create table tasks
     cf_points float,
     cf_rating integer,
     cf_tags integer[],
-    time_limit text,
+    time_limit float,
     memory_limit_bytes integer,
     link VARCHAR(256),
     task_ru text,
