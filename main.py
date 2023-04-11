@@ -8,49 +8,7 @@ conn = psycopg2.connect(database="yutfut",
                         user="yutfut",
                         password="yutfut",
                         port="5432")
-
 cursor = conn.cursor()
-
-
-# tags_dict = {
-#     "*special": "*особая задача",
-#     "2-sat": "2-sat",
-#     "binary search": "бинарный поиск",
-#     "bitmasks": "битмаски",
-#     "brute force": "перебор",
-#     "chinese remainder theorem": "китайская теорема об остатках",
-#     "combinatorics": "комбинаторика",
-#     "constructive algorithms": "конструктив",
-#     "data structures": "структуры данных",
-#     "dfs and similar": "поиск в глубину и подобное",
-#     "divide and conquer": "разделяй и властвуй",
-#     "dp": "дп",
-#     "dsu": "системы непересекающихся множеств",
-#     "expression parsing": "разбор выражений",
-#     "fft": "быстрое преобразование Фурье",
-#     "flows": "потоки",
-#     "games": "игры",
-#     "geometry": "геометрия",
-#     "graph matchings": "паросочетания",
-#     "graphs": "графы",
-#     "greedy": "жадные алгоритмы",
-#     "hashing": "хэши",
-#     "implementation": "реализация",
-#     "interactive": "интерактив",
-#     "math": "математика",
-#     "matrices": "матрицы",
-#     "meet-in-the-middle": "meet-in-the-middle",
-#     "number theory": "теория чисел",
-#     "probabilities": "теория вероятностей",
-#     "schedules": "расписания",
-#     "shortest paths": "кратчайшие пути",
-#     "sortings": "сортировки",
-#     "string suffix structures": "строковые суфф. структуры",
-#     "strings": "строки",
-#     "ternary search": "тернарный поиск",
-#     "trees": "деревья",
-#     "two pointers": "два указателя"
-# }
 
 tags_dict = {
     "*special": 1,
@@ -151,11 +109,24 @@ data = []
 csv.field_size_limit(sys.maxsize)
 
 
-with open('../new_file3.csv') as f:
+def parse_timeout(text):
+    che = text.split('\n')
+    if len(che[0]) == 0:
+        return 1
+    if che[0][:7] == "seconds":
+        che[0] = int(che[0][9:])
+        if len(che[1]) != 0:
+            che[1] = int(che[1][7:]) / 1000000000
+            che[0] += che[1]
+        return che[0]
+    if che[0][:5] == "nanos":
+        che[0] = int(che[0][7:]) / 1000000000
+        return che[0]
+    return 1
+
+
+with open('new_file3.csv') as f:
     reader = csv.reader(f)
-
-    # i = 0
-
     for row in reader:
         data.append(
             [
@@ -179,76 +150,10 @@ with open('../new_file3.csv') as f:
                 row[18]  # note
             ]
         )
-        # i += 1
-        # if i == 2:
-        #     break
 
 for item in data:
     if item == data[0]:
         continue
-    # print(item[10])
-    # print(parse_tags(item[10]))
-    # if len(item[11]) == 0:
-    #     item[11] = ["NULL"]
-
-    # print('''INSERT INTO tasks (
-    #     name,
-    #     description,
-    #     public_tests,
-    #     private_tests,
-    #     generated_tests,
-    #     difficulty,
-    #     cf_contest_id,
-    #     cf_index,
-    #     cf_points,
-    #     cf_rating,
-    #     cf_tags,
-    #     time_limit,
-    #     memory_limit_bytes,
-    #     link,
-    #     task_ru,
-    #     input,
-    #     output,
-    #     note
-    #     ) VALUES (
-    #     E'{0}',
-    #     E'{1}',
-    #     ARRAY{2},
-    #     ARRAY{3},
-    #     ARRAY{4},
-    #     '{5}',
-    #     {6},
-    #     '{7}',
-    #     '{8}',
-    #     '{9}',
-    #     ARRAY{10},
-    #     '{11}',
-    #     '{12}',
-    #     '{13}',
-    #     E'{14}',
-    #     E'{15}',
-    #     E'{16}',
-    #     E'{17}'
-    #     );'''.format(
-    #         item[0].replace("'", r"\'"),
-    #         item[1].replace('\\', r"\\").replace("'", r"\'"),
-    #         parse_tests(item[2]),
-    #         parse_tests(item[3]),
-    #         parse_tests(item[4]),
-    #         item[5],
-    #         item[6],
-    #         item[7],
-    #         item[8],
-    #         item[9],
-    #         parse_tags(item[10]),
-    #         item[11],
-    #         item[12],
-    #         item[13],
-    #         item[14].replace('\\', r"\\").replace("'", r"\'"),
-    #         item[15].replace('\\', r"\\").replace("'", r"\'"),
-    #         item[16].replace('\\', r"\\").replace("'", r"\'"),
-    #         item[17].replace('\\', r"\\").replace("'", r"\'")))
-
     cursor.execute(
         '''INSERT INTO tasks (
         name,
@@ -300,7 +205,7 @@ for item in data:
             item[8],
             item[9],
             parse_tags(item[10]),
-            item[11],
+            parse_timeout(item[11]),
             item[12],
             item[13],
             item[14].replace('\\', r"\\").replace("'", r"\'"),
