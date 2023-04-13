@@ -68,3 +68,9 @@ CREATE TABLE send_task (
     code_text text,
     date TIMESTAMP DEFAULT now() NOT NULL
 );
+
+CREATE TABLE likes (
+    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id integer NOT NULL,
+    task_id integer NOT NULL
+);
