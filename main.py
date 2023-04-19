@@ -125,7 +125,7 @@ def parse_timeout(text):
     return 1
 
 
-with open('../new_file3.csv') as f:
+with open('../rus_db_fill_v1.csv') as f:
     reader = csv.reader(f)
     for row in reader:
         data.append(
