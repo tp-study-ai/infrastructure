@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS tasks CASCADE;
 DROP TABLE IF EXISTS send_task CASCADE;
 DROP TABLE IF EXISTS likes CASCADE;
 
-SET timezone TO '+03';
+SET TIME ZONE 'Europe/Moscow';
 
 create table tasks
 (
