@@ -3,8 +3,6 @@ DROP TABLE IF EXISTS tasks CASCADE;
 DROP TABLE IF EXISTS send_task CASCADE;
 DROP TABLE IF EXISTS likes CASCADE;
 
-SET TIME ZONE 'Europe/Moscow';
-
 create table tasks
 (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -46,7 +44,7 @@ CREATE TABLE send_task (
     tests_total integer,
     lint_success bool,
     code_text text,
-    date TIMESTAMP DEFAULT now() NOT NULL
+    date TIMESTAMP DEFAULT now() + interval '3 hours' NOT NULL
 );
 
 CREATE TABLE likes (
