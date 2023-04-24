@@ -20,6 +20,7 @@ create table tasks
     time_limit float,
     memory_limit_bytes integer,
     link VARCHAR(256),
+    name_ru text,
     task_ru text,
     input text,
     output text,
@@ -51,4 +52,11 @@ CREATE TABLE likes (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id integer NOT NULL,
     task_id integer NOT NULL
+);
+
+CREATE TABLE difficulty_task (
+    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id integer NOT NULL,
+    task_id integer NOT NULL,
+    difficulty integer NOT NULL
 );

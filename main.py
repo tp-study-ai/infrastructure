@@ -10,6 +10,73 @@ conn = psycopg2.connect(database="yutfut",
                         port="5432")
 cursor = conn.cursor()
 
+# tags_dict = {
+#     "*special": "*особая задача",
+#     "2-sat": "2-sat",
+#     "binary search": "бинарный поиск",
+#     "bitmasks": "битмаски",
+#     "brute force": "перебор",
+#     "chinese remainder theorem": "китайская теорема об остатках",
+#     "combinatorics": "комбинаторика",
+#     "constructive algorithms": "конструктив",
+#     "data structures": "структуры данных",
+#     "dfs and similar": "поиск в глубину и подобное",
+#     "divide and conquer": "разделяй и властвуй",
+#     "dp": "дп",
+#     "dsu": "системы непересекающихся множеств",
+#     "expression parsing": "разбор выражений",
+#     "fft": "быстрое преобразование Фурье",
+#     "flows": "потоки",
+#     "games": "игры",
+#     "geometry": "геометрия",
+#     "graph matchings": "паросочетания",
+#     "graphs": "графы",
+#     "greedy": "жадные алгоритмы",
+#     "hashing": "хэши",
+#     "implementation": "реализация",
+#     "interactive": "интерактив",
+#     "math": "математика",
+#     "matrices": "матрицы",
+#     "meet-in-the-middle": "meet-in-the-middle",
+#     "number theory": "теория чисел",
+#     "probabilities": "теория вероятностей",
+#     "schedules": "расписания",
+#     "shortest paths": "кратчайшие пути",
+#     "sortings": "сортировки",
+#     "string suffix structures": "строковые суфф. структуры",
+#     "strings": "строки",
+#     "ternary search": "тернарный поиск",
+#     "trees": "деревья",
+#     "two pointers": "два указателя"
+# }
+
+# seconds: 2\n
+# seconds: 1\nnanos: 500000000\n
+# seconds: 1\n
+# seconds: 5\n
+# seconds: 3\n
+# seconds: 3\nnanos: 500000000\n
+# seconds: 4\n
+# nanos: 500000000\n
+# seconds: 12\n
+# seconds: 7\n
+# seconds: 2\nnanos: 500000000\n
+# seconds: 6\n
+# seconds: 8\n
+# nanos: 750000000\n
+# seconds: 10\n
+# seconds: 4\nnanos: 500000000\n
+# seconds: 5\nnanos: 500000000\n
+# seconds: 2\nnanos: 200000000\n
+# seconds: 15\n
+# seconds: 6\nnanos: 500000000\n
+# seconds: 9\n
+# NaN
+# seconds: 1\nnanos: 250000000\n
+# seconds: 7\nnanos: 500000000\n
+# nanos: 400000000\n
+# seconds: 1\nnanos: 700000000\n
+
 tags_dict = {
     "*special": 1,
     "2-sat": 2,
@@ -125,7 +192,7 @@ def parse_timeout(text):
     return 1
 
 
-with open('../rus_db_fill_v1.csv') as f:
+with open('../new_file31.csv') as f:
     reader = csv.reader(f)
     for row in reader:
         data.append(
@@ -144,10 +211,11 @@ with open('../rus_db_fill_v1.csv') as f:
                 row[12],  # time_limit
                 row[13],  # memory_limit_bytes
                 row[14],  # link
-                row[15],  # task_ru
-                row[16],  # input
-                row[17],  # output
-                row[18]  # note
+                row[15],  # name_ru
+                row[16],  # task_ru
+                row[17],  # input
+                row[18],  # output
+                row[19],  # note
             ]
         )
 
@@ -170,12 +238,13 @@ for item in data:
         time_limit,
         memory_limit_bytes,
         link,
+        name_ru,
         task_ru,
         input,
         output,
         note
         ) VALUES (
-        E'{0}',
+        E'{0}',  
         E'{1}',
         ARRAY{2},
         ARRAY{3},
@@ -186,13 +255,14 @@ for item in data:
         '{8}',
         '{9}',
         ARRAY{10},
-        {11},
+        '{11}',
         '{12}',
         '{13}',
         E'{14}',
         E'{15}',
         E'{16}',
-        E'{17}'
+        E'{17}',
+        E'{18}'
         );'''.format(
             item[0].replace("'", r"\'"),
             item[1].replace('\\', r"\\").replace("'", r"\'"),
@@ -211,5 +281,6 @@ for item in data:
             item[14].replace('\\', r"\\").replace("'", r"\'"),
             item[15].replace('\\', r"\\").replace("'", r"\'"),
             item[16].replace('\\', r"\\").replace("'", r"\'"),
-            item[17].replace('\\', r"\\").replace("'", r"\'")))
+            item[17].replace('\\', r"\\").replace("'", r"\'"),
+            item[18].replace('\\', r"\\").replace("'", r"\'")))
     conn.commit()
