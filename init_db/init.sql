@@ -20,7 +20,7 @@ create table tasks
     time_limit float,
     memory_limit_bytes integer,
     link VARCHAR(256),
-    name_ru text,
+    name_ru VARCHAR(256),
     task_ru text,
     input text,
     output text,
