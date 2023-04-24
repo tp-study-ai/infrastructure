@@ -193,9 +193,7 @@ def parse_timeout(text):
 
 
 def parse_url(a, b):
-    che = "/contest/" + str(a) + "/problem/" + str(b)
-    print(che)
-    return che
+    return "/contest/" + str(a) + "/problem/" + str(b)
 
 
 with open('../new_file31.csv') as f:
