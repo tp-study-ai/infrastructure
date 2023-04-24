@@ -192,6 +192,12 @@ def parse_timeout(text):
     return 1
 
 
+def parse_url(a, b):
+    che = "/contest/" + str(a) + "/problem/" + str(b)
+    print(che)
+    return che
+
+
 with open('../new_file31.csv') as f:
     reader = csv.reader(f)
     for row in reader:
@@ -238,6 +244,7 @@ for item in data:
         time_limit,
         memory_limit_bytes,
         link,
+        short_link,
         name_ru,
         task_ru,
         input,
@@ -258,11 +265,12 @@ for item in data:
         '{11}',
         '{12}',
         '{13}',
-        E'{14}',
+        '{14}',
         E'{15}',
         E'{16}',
         E'{17}',
-        E'{18}'
+        E'{18}',
+        E'{19}'
         );'''.format(
             item[0].replace("'", r"\'"),
             item[1].replace('\\', r"\\").replace("'", r"\'"),
@@ -278,6 +286,7 @@ for item in data:
             parse_timeout(item[11]),
             item[12],
             item[13],
+            parse_url(item[6], item[7]),
             item[14].replace('\\', r"\\").replace("'", r"\'"),
             item[15].replace('\\', r"\\").replace("'", r"\'"),
             item[16].replace('\\', r"\\").replace("'", r"\'"),
