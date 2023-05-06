@@ -25,16 +25,30 @@ services:
     depends_on:
       - db
 
+  vpn:
+    image: jordanpotter/wireguard:latest
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+    volumes:
+      - ./vpnConfig/pl-wg-finevpn.conf:/etc/wireguard/pl-wg-finevpn.conf
+    depends_on:
+      - adminer
+
+
   cg:
     image: yutfut/cg:${CG_VERSION}
+    network_mode: service:wireguard
     restart: always
     ports:
       - '9001:9001'
     volumes:
-      - ./vpnConfig/pl-wg-finevpn.conf:/etc/wireguard/pl-wg-finevpn.conf
       - ./config:/app/config
     depends_on:
-      - adminer
+      - vpn
 
   ml:
     image: yutfut/ml:${ML_VERSION}
