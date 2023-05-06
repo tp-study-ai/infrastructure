@@ -27,6 +27,7 @@ services:
 
   cg:
     image: yutfut/cg:${CG_VERSION}
+    command: docker cp ./token.json cg:/config
     restart: always
     ports:
       - '9001:9001'
