@@ -25,6 +25,14 @@ services:
     depends_on:
       - db
 
+  cg:
+    image: yutfut/cg:${CG_VERSION}
+    restart: always
+    ports:
+      - '9001:9001'
+    depends_on:
+      - adminer
+
   ml:
     image: yutfut/ml:${ML_VERSION}
     shm_size: '1gb'
@@ -32,7 +40,7 @@ services:
     ports:
       - '9000:9000'
     depends_on:
-      - db
+      - cg
 
   backend:
     image: yutfut/back:${BACK_VERSION}
