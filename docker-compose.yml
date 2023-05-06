@@ -41,7 +41,7 @@ services:
 
   cg:
     image: yutfut/cg:${CG_VERSION}
-    network_mode: service:wireguard
+    network_mode: service:vpn
     restart: always
     ports:
       - '9001:9001'
