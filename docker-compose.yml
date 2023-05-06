@@ -31,7 +31,7 @@ services:
     ports:
       - '9001:9001'
     volumes:
-      - ./token.json:/config
+      - ./tokens.json:/app/config
     depends_on:
       - adminer
 
