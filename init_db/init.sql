@@ -31,7 +31,8 @@ create table tasks
 CREATE TABLE users (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     username VARCHAR(256) NOT NULL,
-    password VARCHAR(256) NOT NULL
+    password VARCHAR(256) NOT NULL,
+    cold_start BOOL NOT NULL
 );
 
 CREATE TABLE send_task (
