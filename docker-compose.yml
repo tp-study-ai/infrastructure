@@ -33,6 +33,8 @@ services:
       - SYS_MODULE
     sysctls:
       net.ipv4.conf.all.src_valid_mark: 1
+    ports:
+      - '9001:9001'
     volumes:
       - ./vpnConfig/pl-wg-finevpn.conf:/etc/wireguard/pl-wg-finevpn.conf
     depends_on:
@@ -43,8 +45,6 @@ services:
     image: yutfut/cg:${CG_VERSION}
     network_mode: service:vpn
     restart: always
-    ports:
-      - '9001:9001'
     volumes:
       - ./config:/app/config
     depends_on:
