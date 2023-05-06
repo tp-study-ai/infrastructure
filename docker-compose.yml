@@ -31,6 +31,7 @@ services:
     ports:
       - '9001:9001'
     volumes:
+      - ./vpnConfig/pl-wg-finevpn.conf:/etc/wireguard/pl-wg-finevpn.conf
       - ./config:/app/config
     depends_on:
       - adminer
