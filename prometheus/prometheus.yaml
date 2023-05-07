@@ -11,6 +11,6 @@ scrape_configs:
     static_configs:
       - targets: [ 'node-exporter:9100' ]
 
-  - job_name: 'back'
+  - job_name: 'backend'
     static_configs:
-      - targets: [ '127.0.0.1:8000' ]
+      - targets: [ 'backend:8000' ]
