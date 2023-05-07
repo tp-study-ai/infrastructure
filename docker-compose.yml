@@ -15,15 +15,15 @@ services:
       - ./init_db/:/docker-entrypoint-initdb.d/
       - .:/var/lib/postgresql/data/
 
-  adminer:
-    image: adminer
-    restart: always
-    links:
-      - "db:db"
-    ports:
-      - "8090:8080"
-    depends_on:
-      - db
+#  adminer:
+#    image: adminer
+#    restart: always
+#    links:
+#      - "db:db"
+#    ports:
+#      - "8090:8080"
+#    depends_on:
+#      - db
 
   vpn:
     image: jordanpotter/wireguard:latest
@@ -37,8 +37,8 @@ services:
       - '9001:9001'
     volumes:
       - ./vpnConfig/pl-wg-finevpn.conf:/etc/wireguard/pl-wg-finevpn.conf
-    depends_on:
-      - adminer
+#    depends_on:
+#      - adminer
 
 
   cg:
@@ -80,3 +80,43 @@ services:
       - ./certs:/etc/ssl
     depends_on:
       - backend
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    depends_on:
+      - nginx
+
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+    ports:
+      - '9090:9090'
+    depends_on:
+      - node-exporter
+
+  grafana:
+    image: grafana/grafana-enterprise:8.2.0
+    links:
+      - "prometheus:prometheus"
+    ports:
+      - "8090:3000"
+    user: '472'
+    depends_on:
+      - prometheus
