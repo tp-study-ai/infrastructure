@@ -65,7 +65,7 @@ services:
     ports:
       - '8000:8000'
     volumes:
-      - ./backConfig:/project/tools
+      - ./backConfig:/project/backConfig
     depends_on:
       - ml
 
