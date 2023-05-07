@@ -112,7 +112,7 @@ services:
       - node-exporter
 
   grafana:
-    image: grafana/grafana-enterprise:latest
+    image: grafana/grafana-enterprise:latest-ubuntu
     links:
       - "prometheus:prometheus"
     ports:
