@@ -83,7 +83,6 @@ services:
 
   node-exporter:
     image: prom/node-exporter:latest
-    container_name: node-exporter
     restart: unless-stopped
     volumes:
       - /proc:/host/proc:ro
@@ -100,8 +99,7 @@ services:
       - nginx
 
   prometheus:
-    container_name: prom/prometheus
-    image: prom/prometheus
+    image: prom/prometheus:latest
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
     command:
@@ -112,7 +110,7 @@ services:
       - node-exporter
 
   grafana:
-    image: grafana/grafana-enterprise
+    image: grafana/grafana-enterprise:latest
     links:
       - "prometheus:prometheus"
     ports:
