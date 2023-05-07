@@ -15,15 +15,15 @@ services:
       - ./init_db/:/docker-entrypoint-initdb.d/
       - .:/var/lib/postgresql/data/
 
-#  adminer:
-#    image: adminer
-#    restart: always
-#    links:
-#      - "db:db"
-#    ports:
-#      - "8090:8080"
-#    depends_on:
-#      - db
+  adminer:
+    image: adminer
+    restart: always
+    links:
+      - "db:db"
+    ports:
+      - "8090:8080"
+    depends_on:
+      - db
 
   vpn:
     image: jordanpotter/wireguard:latest
@@ -37,8 +37,8 @@ services:
       - '9001:9001'
     volumes:
       - ./vpnConfig/pl-wg-finevpn.conf:/etc/wireguard/pl-wg-finevpn.conf
-#    depends_on:
-#      - adminer
+    depends_on:
+      - adminer
 
 
   cg:
@@ -114,7 +114,7 @@ services:
     links:
       - "prometheus:prometheus"
     ports:
-      - "8090:3000"
+      - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_USER=yutfut
       - GF_SECURITY_ADMIN_PASSWORD=yutfut
