@@ -103,7 +103,7 @@ services:
     container_name: prometheus
     image: prom/prometheus
     volumes:
-      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
     command:
       - '--config.file=/etc/prometheus/prometheus.yaml'
     ports:
