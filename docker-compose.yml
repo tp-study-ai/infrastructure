@@ -100,7 +100,7 @@ services:
       - nginx
 
   prometheus:
-    container_name: prometheus
+    container_name: prom/prometheus:latest
     image: prom/prometheus
     volumes:
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
@@ -112,7 +112,7 @@ services:
       - node-exporter
 
   grafana:
-    image: grafana/grafana-enterprise:8.2.0
+    image: grafana/grafana-enterprise:latest
     links:
       - "prometheus:prometheus"
     ports:
