@@ -115,9 +115,7 @@ services:
       - "prometheus:prometheus"
     ports:
       - "3000:3000"
-    volumes:
-      - .:/etc/grafana/provisioning
-      - grafana-storage:/var/lib/grafana
+    user: '472'
     environment:
       - GF_SECURITY_ADMIN_USER=${GF_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GF_PASSWORD}
