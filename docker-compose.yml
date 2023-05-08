@@ -115,6 +115,8 @@ services:
       - "prometheus:prometheus"
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
     environment:
       - GF_SECURITY_ADMIN_USER=yutfut
       - GF_SECURITY_ADMIN_PASSWORD=yutfut
