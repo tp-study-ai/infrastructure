@@ -117,7 +117,7 @@ services:
       - "3000:3000"
     volumes:
       - .:/etc/grafana/provisioning
-      - .:/var/lib/grafana
+      - grafana-storage:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=${GF_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GF_PASSWORD}
