@@ -25,8 +25,7 @@ create table tasks
     task_ru text,
     input text,
     output text,
-    note text,
-    master_solution text
+    note text
 );
 
 CREATE TABLE users (
