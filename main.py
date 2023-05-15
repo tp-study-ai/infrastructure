@@ -109,8 +109,6 @@ for item in data:
     if item == data[0]:
         continue
 
-    print(item[20])
-
     cursor.execute(
         '''INSERT INTO tasks (
         name,
